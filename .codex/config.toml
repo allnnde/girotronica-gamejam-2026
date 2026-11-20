@@ -1,3 +1,13 @@
+[features]
+multi_agent = true
+
+[mcp_servers.soundbox]
+url = "http://127.0.0.1:17494/mcp"
+enabled = true
+required = false
+startup_timeout_sec = 30
+tool_timeout_sec = 300
+
 [mcp_servers.unity_mcp]
 command = 'C:\Users\agust\.unity\relay\relay_win.exe'
 args = ["--mcp"]
