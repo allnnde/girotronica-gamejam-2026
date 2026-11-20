@@ -1,0 +1,35 @@
+[mcp_servers.unity_mcp]
+command = 'C:\Users\agust\.unity\relay\relay_win.exe'
+args = ["--mcp"]
+enabled = true
+
+[mcp_servers.blender]
+command = 'C:\Users\agust\AppData\Local\blender-mcp\.venv\Scripts\python.exe'
+args = ["-c", "from blmcp import main; raise SystemExit(main())", "--transport", "stdio"]
+cwd = 'C:\Repositories\girotronica-gamejam-2026'
+enabled = true
+required = false
+startup_timeout_sec = 60
+tool_timeout_sec = 300
+
+[mcp_servers.blender.env]
+BLENDER_MCP_HOST = "127.0.0.1"
+BLENDER_MCP_PORT = "9876"
+
+[mcp_servers.paintbridge]
+command = 'C:\Users\agust\AppData\Local\paintbridge\.venv\Scripts\python.exe'
+args = ['C:\Users\agust\AppData\Local\paintbridge\server\paintbridge-mcp.py']
+cwd = 'C:\Repositories\girotronica-gamejam-2026'
+enabled = true
+required = false
+startup_timeout_sec = 60
+tool_timeout_sec = 180
+
+[mcp_servers.aseprite-ai-artist]
+command = 'C:\Program Files\nodejs\node.exe'
+args = ['C:\Users\agust\AppData\Local\aseprite-ai-artist\node_modules\@pebbly\aseprite-ai-artist\dist\cli.js', 'serve']
+cwd = 'C:\Repositories\girotronica-gamejam-2026'
+enabled = true
+required = false
+startup_timeout_sec = 60
+tool_timeout_sec = 300
