@@ -12,6 +12,14 @@ public class MovementController : MonoBehaviour
     [Tooltip("Velocidad máxima de caída.")]
     [SerializeField, Min(0f)] private float fallSpeed = 4f;
 
+    [Header("Sonidos:")]
+    public AudioSource audioJugador;
+    public AudioClip caminar;
+    public AudioClip saltar;
+    public AudioClip aterrizaje;
+    private bool audioIsPlaying;
+    private bool jumped;
+
     private CharacterController controller;
     private SpriteRenderer spriteRenderer;
     private float verticalSpeed;
@@ -45,11 +53,15 @@ public class MovementController : MonoBehaviour
         if (!CanMove || surface == null) return;
 
         float horizontal = InputSystem.actions.FindAction("Move").ReadValue<Vector2>().x;
-        if (spriteRenderer != null && horizontal != 0f)
+        if (spriteRenderer != null && horizontal != 0f){
             spriteRenderer.flipX = horizontal < 0f;
+            if(!audioIsPlaying){audioJugador.clip = caminar; audioJugador.loop = true; audioJugador.Play(); audioIsPlaying = true;}}
+        else if(horizontal == 0f && audioIsPlaying && grounded){audioJugador.Stop(); audioJugador.loop = false; audioIsPlaying = false;}
+            
 
-        if (grounded && InputSystem.actions.FindAction("Jump").WasPressedThisFrame())
+        if (grounded && InputSystem.actions.FindAction("Jump").WasPressedThisFrame()){
             verticalSpeed = jumpSpeed;
+            if(!audioIsPlaying){audioJugador.clip = saltar; audioJugador.Play(); jumped = true;}}
 
         verticalSpeed = Mathf.Max(verticalSpeed - gravity * Time.deltaTime, -fallSpeed);
         Vector3 velocity = transform.right * (horizontal * speed) + transform.up * verticalSpeed;
@@ -59,8 +71,9 @@ public class MovementController : MonoBehaviour
         if (transform.up == Vector3.up)
             grounded = controller.isGrounded && verticalSpeed <= 0f;
 
-        if (grounded)
+        if (grounded){
             verticalSpeed = 0f;
+            if(jumped){audioJugador.clip = aterrizaje; audioJugador.Play(); jumped = false;}}
     }
 
     private void OnControllerColliderHit(ControllerColliderHit hit)
