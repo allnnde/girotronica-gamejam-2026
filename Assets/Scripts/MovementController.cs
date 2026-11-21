@@ -23,7 +23,7 @@ public class MovementController : MonoBehaviour
     private CharacterController controller;
     private SpriteRenderer spriteRenderer;
     private float verticalSpeed;
-    private bool grounded;
+    public bool grounded;
 
     private void Awake()
     {
@@ -34,6 +34,13 @@ public class MovementController : MonoBehaviour
         Vector3 center = controller.center;
         center.z = -controller.radius;
         controller.center = center;
+    }
+
+    public void SetOpacity(float alpha)
+    {
+        Color color = spriteRenderer.color;
+        color.a = alpha;
+        spriteRenderer.color = color;
     }
 
     public void SetSurface(GameObject newSurface, Transform spawnPoint)
@@ -55,11 +62,11 @@ public class MovementController : MonoBehaviour
         if (!CanMove || surface == null) return;
 
         float horizontal = InputSystem.actions.FindAction("Move").ReadValue<Vector2>().x;
-        if (spriteRenderer != null && horizontal != 0f){
+        if(!grounded && audioIsPlaying){audioJugador.Stop(); audioJugador.loop = false; audioIsPlaying = false;}
+        else if (spriteRenderer != null && horizontal != 0f){
             spriteRenderer.flipX = horizontal < 0f;
             if(!audioIsPlaying){audioJugador.clip = caminar; audioJugador.loop = true; audioJugador.Play(); audioIsPlaying = true;}}
-        else if(horizontal == 0f && audioIsPlaying && !jumped){audioJugador.Stop(); audioJugador.loop = false; audioIsPlaying = false;}
-            
+        else if(horizontal == 0f && audioIsPlaying){audioJugador.Stop(); audioJugador.loop = false; audioIsPlaying = false;}
 
         if (grounded && InputSystem.actions.FindAction("Jump").WasPressedThisFrame()){
             verticalSpeed = jumpSpeed;
