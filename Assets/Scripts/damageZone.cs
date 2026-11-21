@@ -2,9 +2,6 @@ using UnityEngine;
 
 public class damageZone : MonoBehaviour
 {
-    [SerializeField]
-    private float damageAmount = 1f;
-
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
@@ -13,5 +10,7 @@ public class damageZone : MonoBehaviour
             Debug.Log("El jugador ha entrat a la zona de dany!");
         }
     }
+
+    //En caso de pit combinar el codigo de daño con el de tp al checkpoint de la cara del plano.
 
 }

@@ -15,7 +15,8 @@ public class GameOverController : MonoBehaviour
 
     private void Start()
     {
-        
+        currentHpSprite = 3;
+        hpImage.sprite = hpSprite[currentHpSprite];
     }
 
     private void Update()
@@ -25,11 +26,19 @@ public class GameOverController : MonoBehaviour
 
     public void Damage() 
     {
-        currentHpSprite--;
-        hpSprite[currentHpSprite];
-        if (currentHpSprite < 0) 
+        if (currentHpSprite <= 0) 
         {
-            SceneManager.LoadScene("GameOverScene");
+            Death();
         }
+        else 
+        {
+            currentHpSprite--;
+            hpImage.sprite = hpSprite[currentHpSprite];
+        }
+    }
+
+    private void Death()
+    {
+        SceneManager.LoadScene("GameOverScene");
     }
 }
