@@ -12,6 +12,7 @@ public class MovementController : MonoBehaviour
     [SerializeField, Min(0.01f)] private float gravity = 20f;
     [Tooltip("Velocidad máxima de caída.")]
     [SerializeField, Min(0f)] private float fallSpeed = 4f;
+    public bool Invertir;
 
     [Header("Sonidos")]
     public AudioClip caminar;
@@ -96,7 +97,7 @@ public class MovementController : MonoBehaviour
 
         if (grounded && InputSystem.actions.FindAction("Jump").WasPressedThisFrame())
         {
-            body.linearVelocity = transform.right * (horizontal * speed) + transform.up * jumpSpeed;
+            body.linearVelocity = (Invertir == true ? -transform.right : transform.right) * (horizontal * speed) + transform.up * jumpSpeed;
             grounded = false;
             if (!audioIsPlaying)
             {
@@ -118,7 +119,7 @@ public class MovementController : MonoBehaviour
         Vector3 up = transform.up;
         float verticalSpeed = Vector3.Dot(body.linearVelocity, up);
         verticalSpeed = Mathf.Max(verticalSpeed - gravity * Time.fixedDeltaTime, -fallSpeed);
-        body.linearVelocity = transform.right * (horizontal * speed) + up * verticalSpeed;
+        body.linearVelocity =  (Invertir == true ? -transform.right : transform.right) * (horizontal * speed) + up * verticalSpeed;
         grounded = false; // Los contactos de este paso lo vuelven a marcar.
     }
 
