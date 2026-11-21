@@ -5,6 +5,7 @@ public class SceneManagers : MonoBehaviour
 {
     public void ReturntoMainGame()
     {
+        Debug.Log("Tornant al joc principal...");
         SceneManager.LoadScene("MainGame");
     }
 
@@ -15,6 +16,7 @@ public class SceneManagers : MonoBehaviour
 
     public void ReturntoMainMenu()
     {
+        Debug.Log("Tornant al joc principal...");
         SceneManager.LoadScene("MainMenu");
     }
 
