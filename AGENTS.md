@@ -16,7 +16,7 @@ Este repositorio trabaja en modo **game jam**: primero una experiencia jugable p
 3. Implementar el menor corte vertical que permita jugar, observar o decidir algo.
 4. Preferir codigo directo, configuracion local y pocos archivos. Abstraer solo cuando ya hay dos usos reales o un limite que lo exige.
 5. No crear OpenSpec, ADR, matrices de arquitectura ni suites de tests por defecto.
-6. No agregar tests automatizados salvo pedido expreso del usuario. La comprobacion normal es compilacion, consola limpia y smoke playtest del flujo afectado.
+6. Solo hacer pruebas cuando el usuario las pida expresamente y dentro del alcance que indique. Esto incluye pruebas manuales o automatizadas, entrar en Play Mode, hacer smoke playtests, lanzar compilaciones o builds de comprobacion y revisar la consola para validar cambios. No agregar tests automatizados sin pedido expreso. Esta regla tambien se aplica a las pruebas sugeridas por skills o delegadas a otros agentes.
 7. No decidir 2D/3D, pipeline visual, plataforma, resolucion ni controles que el usuario no haya confirmado.
 8. No instalar herramientas, cambiar configuracion global, hacer commit, push, PR o publicacion sin pedido expreso.
 9. Preservar cambios del usuario y no tocar archivos ajenos al corte solicitado.
@@ -47,8 +47,7 @@ Una herramienta no autoriza a crear assets o cambiar escenas fuera del pedido. S
 ## Definicion de terminado para la jam
 
 - El resultado solicitado existe y se puede observar.
-- Si hay Unity, el codigo compila y no deja errores bloqueantes en consola.
-- El flujo afectado pasa un smoke playtest corto.
+- Si el usuario pidio pruebas, informar cuales se realizaron y su resultado. Se puede cerrar una implementacion sin ejecutar pruebas.
 - Los assets tienen formato, escala, nombres y destino claros.
 - Se informan limitaciones reales; no se agregan tareas preventivas.
 

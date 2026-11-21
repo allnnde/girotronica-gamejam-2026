@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(CharacterController))]
 public class MovementController : MonoBehaviour
 {
+    [field: SerializeField] public bool CanMove { get; set; } = true;
     [SerializeField] private GameObject surface;
     [SerializeField, Min(0f)] private float speed = 3.5f;
     [SerializeField, Min(0f)] private float jumpSpeed = 7f;
@@ -41,7 +42,7 @@ public class MovementController : MonoBehaviour
 
     private void Update()
     {
-        if (surface == null) return;
+        if (!CanMove || surface == null) return;
 
         float horizontal = InputSystem.actions.FindAction("Move").ReadValue<Vector2>().x;
         if (spriteRenderer != null && horizontal != 0f)
