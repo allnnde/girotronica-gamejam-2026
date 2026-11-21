@@ -2,24 +2,24 @@
 
 public class GameManager : MonoBehaviour
 {
-    [Tooltip("Cara que queda detrás del personaje en el plano de juego.")]
+    [Tooltip("Cara inicial de la partida. Durante el juego muestra la cara activa.")]
     [SerializeField] private Transform activeFace;
+    [Tooltip("Punto de aparición en la primera cara.")]
+    [SerializeField] private Transform firstSpawnPoint;
     [SerializeField] private MovementController player;
 
-    private Transform appliedFace;
-
     public Transform ActiveFace => activeFace;
+    public Transform FirstFace { get; private set; }
 
-    private void Update()
+    private void Start()
     {
-        if (activeFace != appliedFace) 
-            SetFace(activeFace);
+        FirstFace = activeFace;
+        SetFace(FirstFace, firstSpawnPoint);
     }
 
-    public void SetFace(Transform face)
+    public void SetFace(Transform face, Transform spawnPoint)
     {
         activeFace = face;
-        appliedFace = face;
-        player.SetSurface(face != null ? face.gameObject : null);
+        player.SetSurface(face.gameObject, spawnPoint);
     }
 }

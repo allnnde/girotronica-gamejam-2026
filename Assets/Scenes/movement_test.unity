@@ -791,6 +791,37 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.25, y: 2.5, z: 10.5}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &684915121
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 684915122}
+  m_Layer: 0
+  m_Name: SpawnPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &684915122
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 684915121}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2.25, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1837601411}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &751157794
 GameObject:
   m_ObjectHideFlags: 0
@@ -1275,6 +1306,37 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.25, y: 2.5, z: 10.5}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &1401147115
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1401147116}
+  m_Layer: 0
+  m_Name: SpawnPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1401147116
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1401147115}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2, y: 0, z: 2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1837601461}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1511293992
 GameObject:
   m_ObjectHideFlags: 0
@@ -1682,6 +1744,7 @@ Transform:
   - {fileID: 1258553186}
   - {fileID: 1618931457}
   - {fileID: 1657442704}
+  - {fileID: 684915122}
   m_Father: {fileID: 470709027}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &1837601412
@@ -2262,6 +2325,7 @@ Transform:
   - {fileID: 251818034}
   - {fileID: 1511293993}
   - {fileID: 820060918}
+  - {fileID: 1401147116}
   m_Father: {fileID: 470709027}
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!33 &1837601462
@@ -2440,6 +2504,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   activeFace: {fileID: 1837601411}
+  firstSpawnPoint: {fileID: 684915122}
   player: {fileID: 1014843847}
 --- !u!1 &2006211036
 GameObject:
@@ -2529,6 +2594,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GoalZoneController
   gameManager: {fileID: 1916104402}
   targetFace: {fileID: 1837601461}
+  targetSpawnPoint: {fileID: 1401147116}
   delay: 0.15
 --- !u!65 &2143427595
 BoxCollider:

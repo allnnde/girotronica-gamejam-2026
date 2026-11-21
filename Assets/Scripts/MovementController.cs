@@ -23,18 +23,16 @@ public class MovementController : MonoBehaviour
         Vector3 center = controller.center;
         center.z = -controller.radius;
         controller.center = center;
-        SetSurface(surface);
     }
 
-    public void SetSurface(GameObject newSurface)
+    public void SetSurface(GameObject newSurface, Transform spawnPoint)
     {
         surface = newSurface;
         verticalSpeed = 0f;
         grounded = false;
-        if (surface == null || controller == null) return;
 
         Transform face = surface.transform;
-        Vector3 position = face.position + face.up * controller.skinWidth;
+        Vector3 position = spawnPoint.position + face.up * controller.skinWidth;
 
         controller.enabled = false;
         transform.SetPositionAndRotation(position, Quaternion.LookRotation(-face.up, face.forward));
