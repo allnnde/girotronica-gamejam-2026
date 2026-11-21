@@ -26,13 +26,13 @@ public class GameOverController : MonoBehaviour
 
     public void Damage() 
     {
+        currentHpSprite--;
         if (currentHpSprite <= 0) 
         {
             Death();
         }
         else 
         {
-            currentHpSprite--;
             hpImage.sprite = hpSprite[currentHpSprite-1];
         }
     }
