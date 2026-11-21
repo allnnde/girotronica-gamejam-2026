@@ -10,6 +10,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private MovementController player;
     [SerializeField] private CubeController cubeController;
 
+    private bool isChangingFace;
+
     public Transform ActiveFace => activeFace;
     public Transform FirstFace { get; private set; }
 
@@ -19,27 +21,24 @@ public class GameManager : MonoBehaviour
         player.SetSurface(FirstFace.gameObject, firstSpawnPoint);
     }
 
-    public void SetFace(Transform face, Transform spawnPoint, Faces cubeFace)
+    public void SetFace(Transform face, Transform spawnPoint, Faces cubeFace, float delay)
     {
-        activeFace = face;
-        cubeController.SetFace(cubeFace);
-        StopAllCoroutines();
-        StartCoroutine(SpawnAfterRotation(face, spawnPoint));
+        if (isChangingFace || face == activeFace) return;
+
+        isChangingFace = true;
+        StartCoroutine(ChangeFaceAfterDelay(face, spawnPoint, cubeFace, delay));
     }
 
-    private IEnumerator SpawnAfterRotation(Transform face, Transform spawnPoint)
+    private IEnumerator ChangeFaceAfterDelay(Transform face, Transform spawnPoint, Faces cubeFace, float delay)
     {
-        player.SetOpacity(0f);
+        yield return new WaitForSeconds(delay);
+        activeFace = face;
+        player.gameObject.SetActive(false);
+        cubeController.SetFace(cubeFace);
         yield return new WaitUntil(cubeController.FinishRotation);
+        player.gameObject.SetActive(true);
         player.SetSurface(face.gameObject, spawnPoint);
-
-        const float fadeInDuration = 0.25f;
-        float opacity = 0f;
-        while (opacity < 1f)
-        {
-            yield return null;
-            opacity = Mathf.MoveTowards(opacity, 1f, Time.deltaTime / fadeInDuration);
-            player.SetOpacity(opacity);
-        }
+        player.FadeIn();
+        isChangingFace = false;
     }
 }
