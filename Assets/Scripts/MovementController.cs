@@ -36,6 +36,13 @@ public class MovementController : MonoBehaviour
         controller.center = center;
     }
 
+    public void SetOpacity(float alpha)
+    {
+        Color color = spriteRenderer.color;
+        color.a = alpha;
+        spriteRenderer.color = color;
+    }
+
     public void SetSurface(GameObject newSurface, Transform spawnPoint)
     {
         surface = newSurface;
