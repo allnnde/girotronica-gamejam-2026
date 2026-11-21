@@ -1382,8 +1382,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -250, y: -100}
-  m_SizeDelta: {x: 450, y: 150}
+  m_AnchoredPosition: {x: -300, y: -125}
+  m_SizeDelta: {x: 600, y: 175}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &841645862
 MonoBehaviour:
@@ -1405,7 +1405,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: a16a47a613bd4ff49bafc94ec4e1790d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 392f78c7c390be6429f3be7a84e3b546, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2425,10 +2425,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameOverController
   hpSprite:
-  - {fileID: 21300000, guid: b113ae9caed837a45abb43559dab3685, type: 3}
-  - {fileID: 21300000, guid: b8e39a6b7ebde2a48b0ced09367bd0c7, type: 3}
-  - {fileID: 21300000, guid: fee55521f95409c43bbb7b35e285047a, type: 3}
-  - {fileID: 21300000, guid: a16a47a613bd4ff49bafc94ec4e1790d, type: 3}
+  - {fileID: 21300000, guid: e53cc52af63096242b6808617af3f018, type: 3}
+  - {fileID: 21300000, guid: f16f4328dd9ab6c48a2592c63fc50c0d, type: 3}
+  - {fileID: 21300000, guid: 18e2389418c7fae4ebedb906d577dbe6, type: 3}
+  - {fileID: 21300000, guid: 392f78c7c390be6429f3be7a84e3b546, type: 3}
   hpImage: {fileID: 841645862}
   currentHpSprite: 3
 --- !u!1 &1511777490
