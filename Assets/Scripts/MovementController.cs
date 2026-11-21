@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -49,6 +50,24 @@ public class MovementController : MonoBehaviour
         Color color = spriteRenderer.color;
         color.a = alpha;
         spriteRenderer.color = color;
+    }
+
+    public void FadeIn()
+    {
+        StartCoroutine(FadeInSprite());
+    }
+
+    private IEnumerator FadeInSprite()
+    {
+        const float fadeInDuration = 0.25f;
+        float opacity = 0f;
+        SetOpacity(opacity);
+        while (opacity < 1f)
+        {
+            yield return null;
+            opacity = Mathf.MoveTowards(opacity, 1f, Time.deltaTime / fadeInDuration);
+            SetOpacity(opacity);
+        }
     }
 
     private void Update()
