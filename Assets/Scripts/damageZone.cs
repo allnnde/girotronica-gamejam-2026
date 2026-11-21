@@ -9,7 +9,7 @@ public class damageZone : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            // Aquí pots afegir el codi per aplicar dany al jugador DamgeMethod(damageAmount);
+            other.GetComponent<GameOverController>().Damage();
             Debug.Log("El jugador ha entrat a la zona de dany!");
         }
     }

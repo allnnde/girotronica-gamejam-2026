@@ -1,16 +1,35 @@
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameOverController : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [SerializeField]
+    private Sprite[] hpSprite;
+
+    [SerializeField]
+    private Image hpImage;
+
+    [SerializeField]
+    private int currentHpSprite = 3;
+
+    private void Start()
     {
         
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
         
+    }
+
+    public void Damage() 
+    {
+        currentHpSprite--;
+        hpSprite[currentHpSprite];
+        if (currentHpSprite < 0) 
+        {
+            SceneManager.LoadScene("GameOverScene");
+        }
     }
 }
