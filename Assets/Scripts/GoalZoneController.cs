@@ -14,14 +14,6 @@ public class GoalZoneController : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
-            Invoke(nameof(ChangeFace), delay);
-    }
-
-    private void ChangeFace()
-    {
-        if (targetFace != gameManager.ActiveFace)
-        {
-            gameManager.SetFace(targetFace, targetSpawnPoint, cubeFace);
-        }
+            gameManager.SetFace(targetFace, targetSpawnPoint, cubeFace, delay);
     }
 }
