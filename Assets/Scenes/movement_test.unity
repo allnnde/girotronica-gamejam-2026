@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: f98499ce6c1622645b72189a8e808c41, type: 2}
   m_HaloStrength: 1
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -169,6 +169,7 @@ MonoBehaviour:
   gameManager: {fileID: 1916104402}
   targetFace: {fileID: 95655653}
   cubeFace: 3
+  targetSkybox: 0
   targetSpawnPoint: {fileID: 2109191710}
   delay: 0.15
 --- !u!65 &75496226
@@ -918,6 +919,7 @@ MonoBehaviour:
   gameManager: {fileID: 1916104402}
   targetFace: {fileID: 1837601451}
   cubeFace: 4
+  targetSkybox: 0
   targetSpawnPoint: {fileID: 109549836}
   delay: 0.15
 --- !u!65 &1352605260
@@ -1291,6 +1293,8 @@ MonoBehaviour:
   firstSpawnPoint: {fileID: 1570685630}
   player: {fileID: 1014843847}
   cubeController: {fileID: 1916104403}
+  daySkybox: {fileID: 2100000, guid: f98499ce6c1622645b72189a8e808c41, type: 2}
+  nightSkybox: {fileID: 2100000, guid: 7f20841ed11fe9443b0ba4ebbf0fd84a, type: 2}
 --- !u!114 &1916104403
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1701,6 +1705,7 @@ MonoBehaviour:
   gameManager: {fileID: 1916104402}
   targetFace: {fileID: 1837601441}
   cubeFace: 1
+  targetSkybox: 0
   targetSpawnPoint: {fileID: 2029144036}
   delay: 0.15
 --- !u!65 &2060212300
@@ -2023,6 +2028,10 @@ PrefabInstance:
       propertyPath: gameManager
       value: 
       objectReference: {fileID: 1916104402}
+    - target: {fileID: 3721109809276675369, guid: 01b3251d96b81db4ca18f2face0af20f, type: 3}
+      propertyPath: targetSkybox
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4540917465152859278, guid: 01b3251d96b81db4ca18f2face0af20f, type: 3}
       propertyPath: gameManager
       value: 
