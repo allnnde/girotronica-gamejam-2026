@@ -13,7 +13,7 @@ public class MovementController : MonoBehaviour
     [SerializeField, Min(0f)] private float fallSpeed = 4f;
 
     [Header("Sonidos:")]
-    public AudioSource audioJugador;
+    private AudioSource audioJugador;
     public AudioClip caminar;
     public AudioClip saltar;
     public AudioClip aterrizaje;
@@ -27,6 +27,8 @@ public class MovementController : MonoBehaviour
 
     private void Awake()
     {
+        audioJugador = gameObject.transform.Find("Audio Source").GetComponent<AudioSource>();
+        if(audioJugador?.playOnAwake == true) audioJugador.playOnAwake = false;
         controller = GetComponent<CharacterController>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         Vector3 center = controller.center;
@@ -56,7 +58,7 @@ public class MovementController : MonoBehaviour
         if (spriteRenderer != null && horizontal != 0f){
             spriteRenderer.flipX = horizontal < 0f;
             if(!audioIsPlaying){audioJugador.clip = caminar; audioJugador.loop = true; audioJugador.Play(); audioIsPlaying = true;}}
-        else if(horizontal == 0f && audioIsPlaying && grounded){audioJugador.Stop(); audioJugador.loop = false; audioIsPlaying = false;}
+        else if(horizontal == 0f && audioIsPlaying && !jumped){audioJugador.Stop(); audioJugador.loop = false; audioIsPlaying = false;}
             
 
         if (grounded && InputSystem.actions.FindAction("Jump").WasPressedThisFrame()){

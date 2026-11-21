@@ -19,7 +19,7 @@ Este repositorio trabaja en modo **game jam**: primero una experiencia jugable p
 6. Solo hacer pruebas cuando el usuario las pida expresamente y dentro del alcance que indique. Esto incluye pruebas manuales o automatizadas, entrar en Play Mode, hacer smoke playtests, lanzar compilaciones o builds de comprobacion y revisar la consola para validar cambios. No agregar tests automatizados sin pedido expreso. Esta regla tambien se aplica a las pruebas sugeridas por skills o delegadas a otros agentes.
 7. No decidir 2D/3D, pipeline visual, plataforma, resolucion ni controles que el usuario no haya confirmado.
 8. No instalar herramientas, cambiar configuracion global, hacer commit, push, PR o publicacion sin pedido expreso.
-9. Preservar cambios del usuario y no tocar archivos ajenos al corte solicitado.
+9. Preservar los cambios del usuario y modificar solo lo que pida. Al agregar o conectar un componente existente, conservar su codigo. Si hace falta editar ese componente, explicar el motivo y pedir autorizacion antes.
 10. Si una decision ausente cambia materialmente el resultado, avanzar con lo independiente y presentar una sola pregunta concreta.
 
 ## Agentes locales

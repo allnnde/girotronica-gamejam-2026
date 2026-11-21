@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
@@ -7,6 +8,7 @@ public class GameManager : MonoBehaviour
     [Tooltip("Punto de aparición en la primera cara.")]
     [SerializeField] private Transform firstSpawnPoint;
     [SerializeField] private MovementController player;
+    [SerializeField] private CubeController cubeController;
 
     public Transform ActiveFace => activeFace;
     public Transform FirstFace { get; private set; }
@@ -14,12 +16,19 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         FirstFace = activeFace;
-        SetFace(FirstFace, firstSpawnPoint);
+        player.SetSurface(FirstFace.gameObject, firstSpawnPoint);
     }
 
-    public void SetFace(Transform face, Transform spawnPoint)
+    public void SetFace(Transform face, Transform spawnPoint, Faces cubeFace)
     {
         activeFace = face;
+        cubeController.SetFace(cubeFace);
+        StartCoroutine(SpawnAfterRotation(face, spawnPoint));
+    }
+
+    private IEnumerator SpawnAfterRotation(Transform face, Transform spawnPoint)
+    {
+        yield return new WaitUntil(cubeController.FinishRotation);
         player.SetSurface(face.gameObject, spawnPoint);
     }
 }
