@@ -42,7 +42,7 @@ public class CubeController : MonoBehaviour
         Quaternion target = face switch
         {
             Faces.X => Quaternion.Euler(-90, 0, 90),
-            Faces.mX => Quaternion.Euler(0, 0, -90),
+            Faces.mX => Quaternion.Euler(-90, 0, -90),
             Faces.mY => Quaternion.Euler(0, 90, 90),
             Faces.Z => Quaternion.Euler(180, 0, -180),
             Faces.mZ => Quaternion.Euler(0, 0, 0),
