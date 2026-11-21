@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(CharacterController))]
+[RequireComponent(typeof(Rigidbody), typeof(CapsuleCollider))]
 public class MovementController : MonoBehaviour
 {
     [field: SerializeField] public bool CanMove { get; set; } = true;
@@ -12,28 +12,36 @@ public class MovementController : MonoBehaviour
     [Tooltip("Velocidad máxima de caída.")]
     [SerializeField, Min(0f)] private float fallSpeed = 4f;
 
-    [Header("Sonidos:")]
-    private AudioSource audioJugador;
+    [Header("Sonidos")]
     public AudioClip caminar;
     public AudioClip saltar;
     public AudioClip aterrizaje;
+    public bool grounded;
+
+    private Rigidbody body;
+    private SpriteRenderer spriteRenderer;
+    private AudioSource audioJugador;
+    private float horizontal;
     private bool audioIsPlaying;
     private bool jumped;
 
-    private CharacterController controller;
-    private SpriteRenderer spriteRenderer;
-    private float verticalSpeed;
-    public bool grounded;
-
     private void Awake()
     {
-        audioJugador = gameObject.transform.Find("Audio Source").GetComponent<AudioSource>();
-        if(audioJugador?.playOnAwake == true) audioJugador.playOnAwake = false;
-        controller = GetComponent<CharacterController>();
+        body = GetComponent<Rigidbody>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-        Vector3 center = controller.center;
-        center.z = -controller.radius;
-        controller.center = center;
+        audioJugador = transform.Find("Audio Source").GetComponent<AudioSource>();
+        if (audioJugador.playOnAwake) audioJugador.playOnAwake = false;
+    }
+
+    public void SetSurface(GameObject newSurface, Transform spawnPoint)
+    {
+        surface = newSurface;
+        Transform face = surface.transform;
+        body.rotation = Quaternion.LookRotation(-face.up, face.forward);
+        body.position = spawnPoint.position + face.up * 0.04f;
+        body.linearVelocity = Vector3.zero;
+        horizontal = 0f;
+        grounded = false;
     }
 
     public void SetOpacity(float alpha)
@@ -43,56 +51,84 @@ public class MovementController : MonoBehaviour
         spriteRenderer.color = color;
     }
 
-    public void SetSurface(GameObject newSurface, Transform spawnPoint)
-    {
-        surface = newSurface;
-        verticalSpeed = 0f;
-        grounded = false;
-
-        Transform face = surface.transform;
-        Vector3 position = spawnPoint.position + face.up * controller.skinWidth;
-
-        controller.enabled = false;
-        transform.SetPositionAndRotation(position, Quaternion.LookRotation(-face.up, face.forward));
-        controller.enabled = true;
-    }
-
     private void Update()
     {
         if (!CanMove || surface == null) return;
 
-        float horizontal = InputSystem.actions.FindAction("Move").ReadValue<Vector2>().x;
-        if(!grounded && audioIsPlaying){audioJugador.Stop(); audioJugador.loop = false; audioIsPlaying = false;}
-        else if (spriteRenderer != null && horizontal != 0f){
+        horizontal = InputSystem.actions.FindAction("Move").ReadValue<Vector2>().x;
+
+        if (audioIsPlaying && (!grounded || horizontal == 0f))
+        {
+            audioJugador.Stop();
+            audioJugador.loop = false;
+            audioIsPlaying = false;
+        }
+        else if (spriteRenderer != null && horizontal != 0f)
+        {
             spriteRenderer.flipX = horizontal < 0f;
-            if(!audioIsPlaying){audioJugador.clip = caminar; audioJugador.loop = true; audioJugador.Play(); audioIsPlaying = true;}}
-        else if(horizontal == 0f && audioIsPlaying){audioJugador.Stop(); audioJugador.loop = false; audioIsPlaying = false;}
+            if (!audioIsPlaying)
+            {
+                audioJugador.clip = caminar;
+                audioJugador.loop = true;
+                audioJugador.Play();
+                audioIsPlaying = true;
+            }
+        }
 
-        if (grounded && InputSystem.actions.FindAction("Jump").WasPressedThisFrame()){
-            verticalSpeed = jumpSpeed;
-            if(!audioIsPlaying){audioJugador.clip = saltar; audioJugador.Play(); jumped = true;}}
-
-        verticalSpeed = Mathf.Max(verticalSpeed - gravity * Time.deltaTime, -fallSpeed);
-        Vector3 velocity = transform.right * (horizontal * speed) + transform.up * verticalSpeed;
-        grounded = false;
-        controller.Move(velocity * Time.deltaTime);
-
-        if (transform.up == Vector3.up)
-            grounded = controller.isGrounded && verticalSpeed <= 0f;
-
-        if (grounded){
-            verticalSpeed = 0f;
-            if(jumped){audioJugador.clip = aterrizaje; audioJugador.Play(); jumped = false;}}
+        if (grounded && InputSystem.actions.FindAction("Jump").WasPressedThisFrame())
+        {
+            body.linearVelocity = transform.right * (horizontal * speed) + transform.up * jumpSpeed;
+            grounded = false;
+            if (!audioIsPlaying)
+            {
+                audioJugador.clip = saltar;
+                audioJugador.Play();
+                jumped = true;
+            }
+        }
     }
 
-    private void OnControllerColliderHit(ControllerColliderHit hit)
+    private void FixedUpdate()
     {
-        float upDot = Vector3.Dot(hit.normal, transform.up);
-        float minGroundDot = Mathf.Max(0.001f, Mathf.Cos(controller.slopeLimit * Mathf.Deg2Rad));
+        if (!CanMove || surface == null)
+        {
+            body.linearVelocity = Vector3.zero;
+            return;
+        }
 
-        if (verticalSpeed <= 0f && upDot >= minGroundDot)
+        Vector3 up = transform.up;
+        float verticalSpeed = Vector3.Dot(body.linearVelocity, up);
+        verticalSpeed = Mathf.Max(verticalSpeed - gravity * Time.fixedDeltaTime, -fallSpeed);
+        body.linearVelocity = transform.right * (horizontal * speed) + up * verticalSpeed;
+        grounded = false; // Los contactos de este paso lo vuelven a marcar.
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        DetectGround(collision);
+    }
+
+    private void OnCollisionStay(Collision collision)
+    {
+        DetectGround(collision);
+    }
+
+    private void DetectGround(Collision collision)
+    {
+        for (int i = 0; i < collision.contactCount; i++)
+        {
+            Vector3 normal = collision.GetContact(i).normal;
+            if (Vector3.Dot(normal, transform.up) < 0.7071f) continue; // 45 grados.
+            if (Vector3.Dot(body.linearVelocity, normal) > 0.1f) continue;
+
             grounded = true;
-        else if (verticalSpeed > 0f && upDot <= -minGroundDot)
-            verticalSpeed = 0f;
+            if (jumped)
+            {
+                audioJugador.clip = aterrizaje;
+                audioJugador.Play();
+                jumped = false;
+            }
+            break;
+        }
     }
 }
