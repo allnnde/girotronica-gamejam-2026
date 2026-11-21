@@ -2936,12 +2936,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1916104400}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8f0c174f0c7bdcc42a876087a3661b0a, type: 3}
+  m_Script: {fileID: 11500000, guid: fb425efd8932d034f8e1761d5cdd7ce4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CubeController
   CubeMap: {fileID: 470709023}
   speed: 1
-  faces: 2
+  faces: 0
 --- !u!1 &1922107000
 GameObject:
   m_ObjectHideFlags: 0
