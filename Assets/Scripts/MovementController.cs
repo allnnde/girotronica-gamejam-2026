@@ -27,6 +27,7 @@ public class MovementController : MonoBehaviour
 
     private void Awake()
     {
+        if(audioJugador?.playOnAwake == true) audioJugador.playOnAwake = false;
         controller = GetComponent<CharacterController>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         Vector3 center = controller.center;
