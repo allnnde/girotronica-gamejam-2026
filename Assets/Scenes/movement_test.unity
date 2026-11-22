@@ -4370,9 +4370,21 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6521938234933830724, guid: c187e092aeba0d041b07b54e52f3ca45, type: 3}
+      propertyPath: speed
+      value: 3.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6521938234933830724, guid: c187e092aeba0d041b07b54e52f3ca45, type: 3}
       propertyPath: caminar
       value: 
       objectReference: {fileID: 8300000, guid: 6adf27e609021394ab549101adf018e1, type: 3}
+    - target: {fileID: 6521938234933830724, guid: c187e092aeba0d041b07b54e52f3ca45, type: 3}
+      propertyPath: gravity
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 6521938234933830724, guid: c187e092aeba0d041b07b54e52f3ca45, type: 3}
+      propertyPath: jumpSpeed
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 8790275695362816826, guid: c187e092aeba0d041b07b54e52f3ca45, type: 3}
       propertyPath: m_Name
       value: Player
