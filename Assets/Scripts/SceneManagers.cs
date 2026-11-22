@@ -6,7 +6,7 @@ public class SceneManagers : MonoBehaviour
     public void ReturntoMainGame()
     {
         Debug.Log("Tornant al joc principal...");
-        SceneManager.LoadScene("Game_Test");
+        SceneManager.LoadScene("Game_test_Deco");
     }
 
     public void ExitGame()

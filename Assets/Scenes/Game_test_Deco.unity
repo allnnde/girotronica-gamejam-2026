@@ -1019,6 +1019,51 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f3442da8942d81940b931562dc4024b8, type: 3}
+--- !u!1001 &2054671831
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1153626641, guid: fdcb177a50b6438da8565edcc5e49ee0, type: 3}
+      propertyPath: player
+      value:
+      objectReference: {fileID: 1014843847}
+    - target: {fileID: 1153626642, guid: fdcb177a50b6438da8565edcc5e49ee0, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1153626642, guid: fdcb177a50b6438da8565edcc5e49ee0, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1153626642, guid: fdcb177a50b6438da8565edcc5e49ee0, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1153626645, guid: fdcb177a50b6438da8565edcc5e49ee0, type: 3}
+      propertyPath: m_AdditionalShaderChannelsFlag
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 1611248921, guid: fdcb177a50b6438da8565edcc5e49ee0, type: 3}
+      propertyPath: m_text
+      value: "\xC0via"
+      objectReference: {fileID: 0}
+    - target: {fileID: 1775125301, guid: fdcb177a50b6438da8565edcc5e49ee0, type: 3}
+      propertyPath: m_text
+      value: Acceptar
+      objectReference: {fileID: 0}
+    - target: {fileID: 2136255564, guid: fdcb177a50b6438da8565edcc5e49ee0, type: 3}
+      propertyPath: m_text
+      value: Vida meva, em vas a buscar un xuixo a la pastisseria? Me'n ve de gust un d'aquells que et deixen sucre als dits.
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: fdcb177a50b6438da8565edcc5e49ee0, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -1032,3 +1077,4 @@ SceneRoots:
   - {fileID: 1916104401}
   - {fileID: 350826241}
   - {fileID: 8654408726537848363}
+  - {fileID: 2054671831}
