@@ -24,7 +24,7 @@ public class GameManager : MonoBehaviour
     {
         ApplySkybox(daySkybox);
         FirstFace = activeFace;
-        player.SetSurface(FirstFace.gameObject, firstSpawnPoint);
+        player.SetSurface(FirstFace.gameObject, new Vector3(firstSpawnPoint.transform.position.x, firstSpawnPoint.transform.position.y, firstSpawnPoint.transform.position.z - firstSpawnPoint.transform.localScale.z/2));
     }
 
     public void SetFace(Transform face, Transform spawnPoint, Faces cubeFace, float delay, FaceSkybox skybox)
@@ -66,7 +66,7 @@ public class GameManager : MonoBehaviour
         }
         ApplySkybox(target);
         player.gameObject.SetActive(true);
-        player.SetSurface(face.gameObject, spawnPoint);
+        player.SetSurface(face.gameObject, spawnPoint.position);
         player.FadeIn();
         isChangingFace = false;
     }
