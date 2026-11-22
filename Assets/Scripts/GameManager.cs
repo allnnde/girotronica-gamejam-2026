@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using UnityEngine;
 
+public enum FaceSkybox { Day, Night }
+
 public class GameManager : MonoBehaviour
 {
     [Tooltip("Cara inicial de la partida. Durante el juego muestra la cara activa.")]
@@ -9,37 +11,78 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Transform firstSpawnPoint;
     [SerializeField] private MovementController player;
     [SerializeField] private CubeController cubeController;
+    [SerializeField] private Material daySkybox;
+    [SerializeField] private Material nightSkybox;
+
+    private Material transitionSkybox;
+    private bool isChangingFace;
 
     public Transform ActiveFace => activeFace;
     public Transform FirstFace { get; private set; }
 
     private void Start()
     {
+        ApplySkybox(daySkybox);
         FirstFace = activeFace;
         player.SetSurface(FirstFace.gameObject, firstSpawnPoint);
     }
 
-    public void SetFace(Transform face, Transform spawnPoint, Faces cubeFace)
+    public void SetFace(Transform face, Transform spawnPoint, Faces cubeFace, float delay, FaceSkybox skybox)
     {
-        activeFace = face;
-        cubeController.SetFace(cubeFace);
-        StopAllCoroutines();
-        StartCoroutine(SpawnAfterRotation(face, spawnPoint));
+        if (isChangingFace || face == activeFace) return;
+
+        isChangingFace = true;
+        StartCoroutine(ChangeFaceAfterDelay(face, spawnPoint, cubeFace, delay, skybox));
     }
 
-    private IEnumerator SpawnAfterRotation(Transform face, Transform spawnPoint)
+    private IEnumerator ChangeFaceAfterDelay(Transform face, Transform spawnPoint, Faces cubeFace, float delay, FaceSkybox skybox)
     {
-        player.SetOpacity(0f);
-        yield return new WaitUntil(cubeController.FinishRotation);
-        player.SetSurface(face.gameObject, spawnPoint);
+        yield return new WaitForSeconds(delay);
+        activeFace = face;
+        player.gameObject.SetActive(false);
+        cubeController.SetFace(cubeFace);
 
-        const float fadeInDuration = 0.25f;
-        float opacity = 0f;
-        while (opacity < 1f)
+        Material source = RenderSettings.skybox;
+        Material target = skybox == FaceSkybox.Night ? nightSkybox : daySkybox;
+        if (source != null && target != null && source != target && source.shader == target.shader && cubeController.speed > 0f)
         {
-            yield return null;
-            opacity = Mathf.MoveTowards(opacity, 1f, Time.deltaTime / fadeInDuration);
-            player.SetOpacity(opacity);
+            if (transitionSkybox == null) transitionSkybox = new Material(source);
+            transitionSkybox.CopyPropertiesFromMaterial(source);
+            RenderSettings.skybox = transitionSkybox;
+
+            float elapsed = 0f;
+            while (!cubeController.FinishRotation())
+            {
+                yield return null;
+                elapsed += Time.deltaTime;
+                float duration = cubeController.speed;
+                float progress = duration > 0f ? Mathf.Clamp01(elapsed / duration) : 1f;
+                transitionSkybox.Lerp(source, target, progress);
+            }
         }
+        else
+        {
+            yield return new WaitUntil(cubeController.FinishRotation);
+        }
+        ApplySkybox(target);
+        player.gameObject.SetActive(true);
+        player.SetSurface(face.gameObject, spawnPoint);
+        player.FadeIn();
+        isChangingFace = false;
+    }
+
+    private void ApplySkybox(Material material)
+    {
+        if (material == null || RenderSettings.skybox == material) return;
+
+        RenderSettings.skybox = material;
+        DynamicGI.UpdateEnvironment();
+    }
+
+    private void OnDestroy()
+    {
+        if (transitionSkybox == null) return;
+        if (RenderSettings.skybox == transitionSkybox) RenderSettings.skybox = daySkybox;
+        Destroy(transitionSkybox);
     }
 }
