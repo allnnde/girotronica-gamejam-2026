@@ -19,6 +19,8 @@ public class MovementController : MonoBehaviour
     public AudioClip saltar;
     public AudioClip aterrizaje;
     public bool grounded;
+    public bool IsJumping { get; private set; }
+    public float JumpProgress { get; private set; }
 
     private Rigidbody body;
     private SpriteRenderer spriteRenderer;
@@ -26,6 +28,8 @@ public class MovementController : MonoBehaviour
     private float horizontal;
     private bool audioIsPlaying;
     private bool jumped;
+    private float jumpStartHeight;
+    private float jumpPeakHeight;
 
     private void Awake()
     {
@@ -44,6 +48,7 @@ public class MovementController : MonoBehaviour
         body.linearVelocity = Vector3.zero;
         horizontal = 0f;
         grounded = false;
+        IsJumping = false;
     }
 
     public void SetOpacity(float alpha)
@@ -99,6 +104,10 @@ public class MovementController : MonoBehaviour
         {
             body.linearVelocity = (Invertir == true ? -transform.right : transform.right) * (horizontal * speed) + transform.up * jumpSpeed;
             grounded = false;
+            IsJumping = true;
+            JumpProgress = 0f;
+            jumpStartHeight = Vector3.Dot(body.position, transform.up);
+            jumpPeakHeight = jumpStartHeight;
             if (!audioIsPlaying)
             {
                 audioJugador.clip = saltar;
@@ -120,6 +129,15 @@ public class MovementController : MonoBehaviour
         float verticalSpeed = Vector3.Dot(body.linearVelocity, up);
         verticalSpeed = Mathf.Max(verticalSpeed - gravity * Time.fixedDeltaTime, -fallSpeed);
         body.linearVelocity =  (Invertir == true ? -transform.right : transform.right) * (horizontal * speed) + up * verticalSpeed;
+        if (IsJumping)
+        {
+            float height = Vector3.Dot(body.position, up);
+            jumpPeakHeight = Mathf.Max(jumpPeakHeight, height);
+            // La cima corresponde a la mitad del clip de salto.
+            JumpProgress = verticalSpeed > 0f
+                ? 0.5f * Mathf.InverseLerp(jumpSpeed, 0f, verticalSpeed)
+                : 0.5f + 0.5f * Mathf.InverseLerp(jumpPeakHeight, jumpStartHeight, height);
+        }
         grounded = false; // Los contactos de este paso lo vuelven a marcar.
     }
 
@@ -142,6 +160,7 @@ public class MovementController : MonoBehaviour
             if (Vector3.Dot(body.linearVelocity, normal) > 0.1f) continue;
 
             grounded = true;
+            IsJumping = false;
             if (jumped)
             {
                 audioJugador.clip = aterrizaje;

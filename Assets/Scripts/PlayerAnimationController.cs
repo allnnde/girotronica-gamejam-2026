@@ -18,5 +18,8 @@ public class PlayerAnimationController : MonoBehaviour
         float horizontalSpeed = Vector3.Dot(body.linearVelocity, transform.right);
         bool walking = movement.CanMove && movement.grounded && Mathf.Abs(horizontalSpeed) > 0.01f;
         animator.SetBool("IsWalking", walking);
+        animator.SetBool("IsJumping", movement.IsJumping);
+        if (movement.IsJumping)
+            animator.SetFloat("JumpProgress", movement.JumpProgress);
     }
 }
