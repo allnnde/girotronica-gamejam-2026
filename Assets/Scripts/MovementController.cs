@@ -12,7 +12,6 @@ public class MovementController : MonoBehaviour
     [SerializeField, Min(0.01f)] private float gravity = 20f;
     [Tooltip("Velocidad máxima de caída.")]
     [SerializeField, Min(0f)] private float fallSpeed = 4f;
-    public bool Invertir;
 
     [Header("Sonidos")]
     public AudioClip caminar;
@@ -24,6 +23,7 @@ public class MovementController : MonoBehaviour
 
     private Rigidbody body;
     private SpriteRenderer spriteRenderer;
+    private Coroutine opacityFade;
     private AudioSource audioJugador;
     private float horizontal;
     private bool audioIsPlaying;
@@ -51,29 +51,30 @@ public class MovementController : MonoBehaviour
         IsJumping = false;
     }
 
-    public void SetOpacity(float alpha)
+    private void SetOpacity(float alpha)
     {
         Color color = spriteRenderer.color;
         color.a = alpha;
         spriteRenderer.color = color;
     }
 
-    public void FadeIn()
+    public Coroutine FadeTo(float targetAlpha, float duration)
     {
-        StartCoroutine(FadeInSprite());
+        if (opacityFade != null) StopCoroutine(opacityFade);
+        opacityFade = StartCoroutine(FadeSprite(targetAlpha, duration));
+        return opacityFade;
     }
 
-    private IEnumerator FadeInSprite()
+    private IEnumerator FadeSprite(float targetAlpha, float duration)
     {
-        const float fadeInDuration = 0.25f;
-        float opacity = 0f;
-        SetOpacity(opacity);
-        while (opacity < 1f)
+        float startAlpha = spriteRenderer.color.a;
+        for (float elapsed = 0f; elapsed < duration; elapsed += Time.deltaTime)
         {
+            SetOpacity(Mathf.SmoothStep(startAlpha, targetAlpha, elapsed / duration));
             yield return null;
-            opacity = Mathf.MoveTowards(opacity, 1f, Time.deltaTime / fadeInDuration);
-            SetOpacity(opacity);
         }
+        SetOpacity(targetAlpha);
+        opacityFade = null;
     }
 
     private void Update()
@@ -102,7 +103,7 @@ public class MovementController : MonoBehaviour
 
         if (grounded && InputSystem.actions.FindAction("Jump").WasPressedThisFrame())
         {
-            body.linearVelocity = (Invertir == true ? -transform.right : transform.right) * (horizontal * speed) + transform.up * jumpSpeed;
+            body.linearVelocity = transform.right * (horizontal * speed) + transform.up * jumpSpeed;
             grounded = false;
             IsJumping = true;
             JumpProgress = 0f;
@@ -128,7 +129,7 @@ public class MovementController : MonoBehaviour
         Vector3 up = transform.up;
         float verticalSpeed = Vector3.Dot(body.linearVelocity, up);
         verticalSpeed = Mathf.Max(verticalSpeed - gravity * Time.fixedDeltaTime, -fallSpeed);
-        body.linearVelocity =  (Invertir == true ? -transform.right : transform.right) * (horizontal * speed) + up * verticalSpeed;
+        body.linearVelocity = transform.right * (horizontal * speed) + up * verticalSpeed;
         if (IsJumping)
         {
             float height = Vector3.Dot(body.position, up);

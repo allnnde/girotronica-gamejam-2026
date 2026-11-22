@@ -1,57 +1,40 @@
-using System;
 using UnityEngine;
-using UnityEngine.InputSystem;
-
-public enum Faces { X, mX, Y, mY, Z, mZ }
 
 public class CubeController : MonoBehaviour
 {
     public GameObject CubeMap;
-    private bool rotate;
-    private float elapsedSeconds;
     [Tooltip("Duración del giro en segundos.")]
     public float speed = 1;
-    [SerializeField] private Faces faces;
-    private Faces savedFaces;
-    private Quaternion startRot;
 
-    public void SetFace(Faces face)
+    public float RotationProgress { get; private set; } = 1f;
+    private float elapsedSeconds;
+    private Quaternion initialFaceRotation;
+    private Quaternion startRotation;
+    private Quaternion targetRotation;
+
+    public void SetInitialFace(Transform face)
     {
-        faces = face;
+        initialFaceRotation = face.rotation;
     }
 
-    public bool FinishRotation() => faces == savedFaces && !rotate;
-
-    void Awake() { savedFaces = faces; }
-    void Update()
+    public void SetFace(Transform face, bool upsideDown)
     {
-        if (faces != savedFaces || rotate)
-            AnimateRotation(faces);
+        startRotation = CubeMap.transform.rotation;
+        Quaternion presentation = initialFaceRotation;
+        if (upsideDown) presentation *= Quaternion.AngleAxis(180f, Vector3.up);
+        targetRotation = presentation * Quaternion.Inverse(face.rotation) * startRotation;
+        elapsedSeconds = 0f;
+        RotationProgress = 0f;
     }
 
-    public void AnimateRotation(Faces face)
+    public bool FinishRotation() => RotationProgress >= 1f;
+
+    private void Update()
     {
-        if (!rotate || face != savedFaces)
-        {
-            faces = face;
-            savedFaces = face;
-            startRot = CubeMap.transform.rotation;
-            elapsedSeconds = 0f;
-        }
-
-        Quaternion target = face switch
-        {
-            Faces.X => Quaternion.Euler(-90, 0, 90),
-            Faces.mX => Quaternion.Euler(-90, 0, -90),
-            Faces.mY => Quaternion.Euler(0, 90, 90),
-            Faces.Z => Quaternion.Euler(180, 0, -180),
-            Faces.mZ => Quaternion.Euler(0, 0, 0),
-            _ => Quaternion.identity
-        };
-
+        if (FinishRotation()) return;
         elapsedSeconds += Time.deltaTime;
         float progress = speed > 0f ? Mathf.Clamp01(elapsedSeconds / speed) : 1f;
-        CubeMap.transform.rotation = Quaternion.Slerp(startRot, target, progress);
-        rotate = progress < 1f;
+        RotationProgress = Mathf.SmoothStep(0f, 1f, progress);
+        CubeMap.transform.rotation = Quaternion.Slerp(startRotation, targetRotation, RotationProgress);
     }
 }
