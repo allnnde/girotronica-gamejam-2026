@@ -26,8 +26,8 @@ public class MovementController : MonoBehaviour
     private Coroutine opacityFade;
     private AudioSource audioJugador;
     private float horizontal;
-    private bool audioIsPlaying;
-    private bool jumped;
+    private bool hasTouchedGround;
+    private bool landingPending;
     private float jumpStartHeight;
     private float jumpPeakHeight;
 
@@ -49,6 +49,10 @@ public class MovementController : MonoBehaviour
         horizontal = 0f;
         grounded = false;
         IsJumping = false;
+        hasTouchedGround = false;
+        landingPending = false;
+        audioJugador.Stop();
+        audioJugador.loop = false;
     }
 
     private void SetOpacity(float alpha)
@@ -79,27 +83,16 @@ public class MovementController : MonoBehaviour
 
     private void Update()
     {
-        if (!CanMove || surface == null) return;
+        if (!CanMove || surface == null)
+        {
+            UpdateFootsteps(false);
+            return;
+        }
 
         horizontal = InputSystem.actions.FindAction("Move").ReadValue<Vector2>().x;
 
-        if (audioIsPlaying && (!grounded || horizontal == 0f))
-        {
-            audioJugador.Stop();
-            audioJugador.loop = false;
-            audioIsPlaying = false;
-        }
-        else if (spriteRenderer != null && horizontal != 0f)
-        {
+        if (spriteRenderer != null && horizontal != 0f)
             spriteRenderer.flipX = horizontal < 0f;
-            if (!audioIsPlaying)
-            {
-                audioJugador.clip = caminar;
-                audioJugador.loop = true;
-                audioJugador.Play();
-                audioIsPlaying = true;
-            }
-        }
 
         if (grounded && InputSystem.actions.FindAction("Jump").WasPressedThisFrame())
         {
@@ -109,13 +102,33 @@ public class MovementController : MonoBehaviour
             JumpProgress = 0f;
             jumpStartHeight = Vector3.Dot(body.position, transform.up);
             jumpPeakHeight = jumpStartHeight;
-            if (!audioIsPlaying)
-            {
-                audioJugador.clip = saltar;
-                audioJugador.Play();
-                jumped = true;
-            }
+            PlayMovementClip(saltar);
         }
+
+        UpdateFootsteps(grounded && horizontal != 0f);
+    }
+
+    private void UpdateFootsteps(bool walking)
+    {
+        if (walking && !audioJugador.isPlaying && caminar != null)
+        {
+            audioJugador.clip = caminar;
+            audioJugador.loop = true;
+            audioJugador.Play();
+        }
+        else if (!walking && audioJugador.loop)
+        {
+            audioJugador.Stop();
+            audioJugador.loop = false;
+        }
+    }
+
+    private void PlayMovementClip(AudioClip clip)
+    {
+        if (clip == null) return;
+        audioJugador.loop = false;
+        audioJugador.clip = clip;
+        audioJugador.Play();
     }
 
     private void FixedUpdate()
@@ -139,6 +152,9 @@ public class MovementController : MonoBehaviour
                 ? 0.5f * Mathf.InverseLerp(jumpSpeed, 0f, verticalSpeed)
                 : 0.5f + 0.5f * Mathf.InverseLerp(jumpPeakHeight, jumpStartHeight, height);
         }
+        // grounded todavía representa los contactos del paso anterior.
+        if (hasTouchedGround && !grounded)
+            landingPending = true;
         grounded = false; // Los contactos de este paso lo vuelven a marcar.
     }
 
@@ -162,11 +178,11 @@ public class MovementController : MonoBehaviour
 
             grounded = true;
             IsJumping = false;
-            if (jumped)
+            hasTouchedGround = true;
+            if (landingPending)
             {
-                audioJugador.clip = aterrizaje;
-                audioJugador.Play();
-                jumped = false;
+                landingPending = false;
+                if (CanMove) PlayMovementClip(aterrizaje);
             }
             break;
         }

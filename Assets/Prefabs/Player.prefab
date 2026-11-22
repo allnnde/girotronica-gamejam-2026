@@ -278,9 +278,9 @@ MonoBehaviour:
   jumpSpeed: 7
   gravity: 20
   fallSpeed: 4
-  caminar: {fileID: 0}
-  saltar: {fileID: 0}
-  aterrizaje: {fileID: 0}
+  caminar: {fileID: 8300000, guid: 6adf27e609021394ab549101adf018e1, type: 3}
+  saltar: {fileID: 8300000, guid: 84a4a0b1dab71a244b9f4e6a521dac81, type: 3}
+  aterrizaje: {fileID: 8300000, guid: 03edf67dc5b14f3e82eca340b81e8d1d, type: 3}
   grounded: 0
 --- !u!54 &3177741957028826140
 Rigidbody:
