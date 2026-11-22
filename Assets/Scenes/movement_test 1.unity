@@ -1237,6 +1237,7 @@ MonoBehaviour:
   gameManager: {fileID: 1916104402}
   targetFace: {fileID: 1837601451}
   cubeFace: 4
+  targetSkybox: 0
   targetSpawnPoint: {fileID: 109549836}
   delay: 0.15
 --- !u!65 &1352605260
@@ -1386,6 +1387,8 @@ MonoBehaviour:
   firstSpawnPoint: {fileID: 1570685630}
   player: {fileID: 1014843847}
   cubeController: {fileID: 1916104403}
+  daySkybox: {fileID: 0}
+  nightSkybox: {fileID: 0}
 --- !u!114 &1916104403
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1684,6 +1687,7 @@ MonoBehaviour:
   gameManager: {fileID: 1916104402}
   targetFace: {fileID: 1837601441}
   cubeFace: 1
+  targetSkybox: 0
   targetSpawnPoint: {fileID: 2029144036}
   delay: 0.15
 --- !u!65 &2060212300
