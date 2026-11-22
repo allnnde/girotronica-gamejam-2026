@@ -35,12 +35,12 @@ public class MovementController : MonoBehaviour
         if (audioJugador.playOnAwake) audioJugador.playOnAwake = false;
     }
 
-    public void SetSurface(GameObject newSurface, Transform spawnPoint)
+    public void SetSurface(GameObject newSurface, Vector3 spawnPoint)
     {
         surface = newSurface;
         Transform face = surface.transform;
         body.rotation = Quaternion.LookRotation(-face.up, face.forward);
-        body.position = spawnPoint.position + face.up * 0.04f;
+        body.position = spawnPoint+ face.up * 0.04f;
         body.linearVelocity = Vector3.zero;
         horizontal = 0f;
         grounded = false;
