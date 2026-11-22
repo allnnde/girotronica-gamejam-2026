@@ -3,10 +3,8 @@ using UnityEngine;
 public class GoalZoneController : MonoBehaviour
 {
     [SerializeField] private GameManager gameManager;
-    [Tooltip("Cara de destino. Vacío usa la primera cara de la partida.")]
+    [Tooltip("Cara de destino. Su eje Y apunta hacia fuera del cubo y su eje Z marca la vertical del nivel.")]
     [SerializeField] private Transform targetFace;
-    [Tooltip("Cara a la que gira el cubo al alcanzar esta meta.")]
-    [SerializeField] private Faces cubeFace;
     [Tooltip("Cielo de la cara de destino al completar el giro.")]
     [SerializeField] private FaceSkybox targetSkybox = FaceSkybox.Day;
     [Tooltip("Punto de aparición sobre la cara de destino.")]
@@ -16,6 +14,6 @@ public class GoalZoneController : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
-            gameManager.SetFace(targetFace, targetSpawnPoint, cubeFace, delay, targetSkybox);
+            gameManager.SetFace(targetFace, targetSpawnPoint, delay, targetSkybox);
     }
 }
