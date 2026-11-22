@@ -21,7 +21,11 @@ AnimationClip:
   - serializedVersion: 2
     curve:
     - time: 0
-      value: {fileID: -6191375719030084720, guid: ebc51a2ca4de2a24e9cefec810d4b2b2, type: 3}
+      value: {fileID: 655213441068844283, guid: 83870ed47d1cd6f47898ee6875314911, type: 3}
+    - time: 0.33333334
+      value: {fileID: 1218015476, guid: 83870ed47d1cd6f47898ee6875314911, type: 3}
+    - time: 0.6666667
+      value: {fileID: 655213441068844283, guid: 83870ed47d1cd6f47898ee6875314911, type: 3}
     attribute: m_Sprite
     path: Paper
     classID: 212
@@ -45,13 +49,15 @@ AnimationClip:
       isSerializeReferenceCurve: 0
       metaData: 0
     pptrCurveMapping:
-    - {fileID: -6191375719030084720, guid: ebc51a2ca4de2a24e9cefec810d4b2b2, type: 3}
+    - {fileID: 655213441068844283, guid: 83870ed47d1cd6f47898ee6875314911, type: 3}
+    - {fileID: 1218015476, guid: 83870ed47d1cd6f47898ee6875314911, type: 3}
+    - {fileID: 655213441068844283, guid: 83870ed47d1cd6f47898ee6875314911, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.016666668
+    m_StopTime: 0.68333334
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
