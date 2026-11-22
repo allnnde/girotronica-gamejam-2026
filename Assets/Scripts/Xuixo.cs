@@ -10,9 +10,14 @@ public class Xuixo : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             Debug.Log("Has guanyat!");
-            SceneManager.LoadScene("VictoryScene");
+            other.gameObject.GetComponent<MovementController>().enabled = false;
+            Invoke("GoToVictroyScene", 2f);
         }
     }
 
+    private void GoToVictroyScene()
+    {
+        SceneManager.LoadScene("VictoryScene");
+    }
 
 }
