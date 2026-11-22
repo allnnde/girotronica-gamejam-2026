@@ -1,16 +1,18 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Xuixo : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+
+
+    private void OnTriggerEnter(Collider other) 
     {
-        
+        if (other.CompareTag("Player"))
+        {
+            Debug.Log("Has guanyat!");
+            SceneManager.LoadScene("VictoryScene");
+        }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
 }
